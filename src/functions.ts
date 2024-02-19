@@ -12,7 +12,7 @@ export function fahrenheitToCelius(temperature: number): number {
  * if the number is greater than zero.
  */
 export function add3(first: number, second: number, third: number): number {
-    let total: number = 0;
+    let total = 0;
     if (first > 0 && second > 0 && third > 0) {
         total = first + second + third;
     } else if (first > 0 && second > 0 && third <= 0) {
