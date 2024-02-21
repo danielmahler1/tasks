@@ -109,17 +109,14 @@ export function injectPositive(values: number[]): number[] {
     let sum = 0;
     let found = false;
 
-    const result = values.reduce(
-        (acc: number[], value: number, index: number) => {
-            sum += value;
-            if (value < 0 && !found) {
-                found = true;
-                return [...acc, value, sum - value];
-            }
-            return [...acc, value];
-        },
-        []
-    );
+    const result = values.reduce((acc: number[], value: number) => {
+        sum += value;
+        if (value < 0 && !found) {
+            found = true;
+            return [...acc, value, sum - value];
+        }
+        return [...acc, value];
+    }, []);
 
     if (!found) {
         return [...result, sum];
