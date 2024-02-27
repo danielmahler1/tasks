@@ -211,20 +211,22 @@ export function changeQuestionTypeById(
     targetId: number,
     newQuestionType: QuestionType
 ): Question[] {
-    const changed = questions.map(
-        (question: Question): Question =>
-            question.id === targetId
-                ? {
-                      ...question,
-                      type: newQuestionType,
-                      options:
-                          newQuestionType === "multiple_choice_question"
-                              ? question.options
-                              : []
-                  }
-                : question
-    );
-    return changed;
+    return questions.map((question: Question): Question => {
+        if (question.id === targetId) {
+            const updatedQuestion = {
+                ...question,
+                type: newQuestionType
+            };
+            if (newQuestionType === "multiple_choice_question") {
+                updatedQuestion.options = question.options;
+            } else {
+                updatedQuestion.options = [];
+            }
+            return updatedQuestion;
+        } else {
+            return question;
+        }
+    });
 }
 
 /**
@@ -243,24 +245,30 @@ export function editOption(
     targetOptionIndex: number,
     newOption: string
 ): Question[] {
-    const edited = questions.map(
-        (question: Question): Question =>
-            question.id === targetId
-                ? {
-                      ...question,
-                      options:
-                          targetOptionIndex === -1
-                              ? [...question.options, newOption]
-                              : question.options.map(
-                                    (option: string, index: number): string =>
-                                        index === targetOptionIndex
-                                            ? newOption
-                                            : option
-                                )
-                  }
-                : question
-    );
-    return edited;
+    return questions.map((question: Question): Question => {
+        if (question.id === targetId) {
+            let updatedOptions;
+            if (targetOptionIndex === -1) {
+                updatedOptions = [...question.options, newOption];
+            } else {
+                updatedOptions = question.options.map(
+                    (option: string, index: number): string => {
+                        if (index === targetOptionIndex) {
+                            return newOption;
+                        } else {
+                            return option;
+                        }
+                    }
+                );
+            }
+            return {
+                ...question,
+                options: updatedOptions
+            };
+        } else {
+            return question;
+        }
+    });
 }
 
 /***
@@ -274,24 +282,22 @@ export function duplicateQuestionInArray(
     targetId: number,
     newId: number
 ): Question[] {
-    const duplicated = questions.reduce(
-        (
-            previousValue: Question[],
-            currentValue: Question,
-            currentIndex: number,
-            array: Question[]
-        ): Question[] =>
-            currentValue.id === targetId
-                ? [
-                      ...previousValue,
-                      currentValue,
-                      duplicateQuestion(newId, currentValue)
-                  ]
-                : [...previousValue, currentValue],
+    return questions.reduce(
+        (previousValue: Question[], currentValue: Question): Question[] => {
+            if (currentValue.id === targetId) {
+                return [
+                    ...previousValue,
+                    currentValue,
+                    duplicateQuestion(newId, currentValue)
+                ];
+            } else {
+                return [...previousValue, currentValue];
+            }
+        },
         []
     );
-    return duplicated;
 }
+
 function currentSum(
     previousValue: Question,
     currentValue: Question,
