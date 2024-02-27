@@ -288,7 +288,7 @@ export function duplicateQuestionInArray(
         []
     );
 }
-
+/** 
 function currentSum(
     previousValue: Question,
     currentValue: Question,
@@ -297,3 +297,4 @@ function currentSum(
 ): Question {
     throw new Error("Function not implemented.");
 }
+*/
