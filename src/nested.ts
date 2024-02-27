@@ -71,12 +71,8 @@ export function getNames(questions: Question[]): string[] {
  */
 export function sumPoints(questions: Question[]): number {
     const points = questions.reduce(
-        (
-            previousValue: number,
-            currentValue: Question,
-            currentIndex: number,
-            array: Question[]
-        ): number => previousValue + currentValue.points,
+        (previousValue: number, currentValue: Question): number =>
+            previousValue + currentValue.points,
         0
     );
     return points;
@@ -87,12 +83,7 @@ export function sumPoints(questions: Question[]): number {
  */
 export function sumPublishedPoints(questions: Question[]): number {
     const points = questions.reduce(
-        (
-            previousValue: number,
-            currentValue: Question,
-            currentIndex: number,
-            array: Question[]
-        ): number =>
+        (previousValue: number, currentValue: Question): number =>
             currentValue.published
                 ? previousValue + currentValue.points
                 : previousValue,
